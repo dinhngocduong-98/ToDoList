@@ -4,10 +4,16 @@
       <comp-title />
     </header>
 
-    <comp-control />
+    <comp-control
+      v-bind:strSearch = 'strSearch'
+      v-bind:orderBy = 'orderBy'
+      v-bind:orderDir = 'orderDir'
+      v-on:handleSearch = 'handleSearch'
+      v-on:handleSort = 'handleSort'
+    />
 
     <todo-list-table
-		v-bind:listTask = "listTask"
+		v-bind:listTask = "listTaskSearch"
 	/>
     <comp-form />
   </div>
@@ -25,8 +31,33 @@ export default {
   name: "app",
   data() {
     return {
-		listTask: listTask
+		listTask: listTask,
+    strSearch: '',
+    orderBy: 'name',
+    orderDir: 'ASC'
 	};
+  },
+  computed: {
+    listTaskSearch() {
+      const { strSearch } = this;
+      // var newItem = [];
+      // this.listTask.forEach(function(item, index){
+      //   let taskNameRaw = item.taskName.toLowerCase();
+      //   let strSearchRaw = strSearch.toLowerCase();
+      //   if(item.taskName && taskNameRaw.includes(strSearchRaw)){
+      //     newItem.push(item);
+      //   }
+      // }) 
+      var newItem = this.listTask.filter(item => {
+        return item.taskName.toLowerCase().includes(strSearch.toLowerCase());
+      });
+      return newItem;
+    },
+    listTaskSort() {
+      var listTask = this.listTask
+      listTask.sort(this.compareName())
+    }
+
   },
   components: {
     TodoListTable,
@@ -34,6 +65,27 @@ export default {
     CompControl,
     CompForm,
   },
+  methods: {
+    compareName(a,b) {
+      var numberSort = this.orderDir === 'asc' ? -1 : 1;
+      if(a.name < b.name) return numberSort;
+      else if (a.name > b.name) return numberSort * (-1);
+      return 0;
+    },
+    compareLevel(a, b) {
+      var numberSort = this.orderDir === 'asc' ? -1 : 1;
+      if(a.level < b.level) return numberSort;
+      else if (a.level > b.level) return numberSort * (-1);
+      return 0;
+    },
+    handleSearch(data) {
+      this.strSearch = data;
+    },
+    handleSort(orderBy, orderDir) {
+      this.orderBy = orderBy;
+      this.orderDir = orderDir;
+    }
+  }
 };
 </script>
 

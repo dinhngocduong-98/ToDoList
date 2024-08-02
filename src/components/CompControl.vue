@@ -1,29 +1,33 @@
 <template>
   <div>
-    <form class="search">
+    <form class="search" @submit.prevent>
       <input
+        v-bind:value = "strSearch"
+        v-on:input = "handleSearch"
         class="form-control m-auto"
         type="text"
         name="search"
         placeholder="search todos"
       />
       <span>
-      <button>Clear</button>
+      <button
+        v-on:click = "handleClear"
+      >Clear</button>
       </span>
     </form>
+    <div >
     <b-dropdown text="SortBy">
-      <b-dropdown-item>Name ASC</b-dropdown-item>
-      <b-dropdown-item>Name DESC</b-dropdown-item>
+      <b-dropdown-item v-on:click = "handleSort('name', 'ASC')">Name ASC</b-dropdown-item>
+      <b-dropdown-item v-on:click = "handleSort('name', 'DESC')">Name DESC</b-dropdown-item>
       <b-dropdown-divider></b-dropdown-divider>
-      <b-dropdown-item>Level ASC</b-dropdown-item>
-      <b-dropdown-item>Level DESC</b-dropdown-item>
+      <b-dropdown-item v-on:click = "handleSort('level', 'ASC')">Level ASC</b-dropdown-item>
+      <b-dropdown-item v-on:click = "handleSort('level', 'DESC')">Level DESC</b-dropdown-item>
     </b-dropdown>
     <span
-      v-bind:style="{
-        backgroundColor: 'white',
-      }"
-      >NAME - DESC</span
-    >
+      class = "upper-case"
+      >{{ orderBy }} - {{ orderDir }}
+    </span>
+    </div>
   </div>
 </template>
 
@@ -33,8 +37,38 @@ export default {
   data() {
     return {};
   },
+  props: {
+    strSearch: {
+      type: String,
+      default: ''
+    },
+    orderBy: {
+      type: String,
+      default: 'name'
+    },
+    orderDir: {
+      type: String,
+      default: 'ASC'
+    }
+  },
+  methods: {
+    handleClear() {
+      this.$emit('handleSearch', '');
+    },
+    handleSearch(e) {
+      this.$emit('handleSearch', e.target.value);
+    },
+    handleSort(orderBy, orderDir) {
+        this.$emit('handleSort', orderBy, orderDir)
+    }
+  }
 };
 </script>
 
 <style>
+  .upper-case {
+    text-transform: uppercase;
+    background-color: white;
+    color: blue;
+  }
 </style>
