@@ -4,8 +4,12 @@
     <span>{{task.taskName}}</span>
     <span>{{getLevelTask}}</span>
     <span>    </span>
-    <i class="far fa-trash-alt delete"></i>
-    <button>edit</button>
+    <i
+      v-on:click = "handleDelete"
+      class="far fa-trash-alt delete"></i>
+    <button
+      v-on:click = "handleEdit"
+    >edit</button>
   </li>
 </template>
 
@@ -31,6 +35,17 @@ export default {
   computed: {
     getLevelTask(){
         return this.mapLevel[this.task.level].name;
+    }
+  },
+  methods: {
+    handleDelete() {
+      // console.log('list-item:')
+      if(confirm('ban muon xoa')) {       
+        this.$emit('handleDelete', this.task);
+      }
+    },
+    handleEdit() {     
+      this.$emit('handleEdit', this.task);
     }
   }
 };

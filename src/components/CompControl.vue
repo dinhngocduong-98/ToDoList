@@ -17,11 +17,11 @@
     </form>
     <div >
     <b-dropdown text="SortBy">
-      <b-dropdown-item v-on:click = "handleSort('name', 'ASC')">Name ASC</b-dropdown-item>
-      <b-dropdown-item v-on:click = "handleSort('name', 'DESC')">Name DESC</b-dropdown-item>
+      <b-dropdown-item v-on:click = "handleSort('name', 'asc')">Name ASC</b-dropdown-item>
+      <b-dropdown-item v-on:click = "handleSort('name', 'desc')">Name DESC</b-dropdown-item>
       <b-dropdown-divider></b-dropdown-divider>
-      <b-dropdown-item v-on:click = "handleSort('level', 'ASC')">Level ASC</b-dropdown-item>
-      <b-dropdown-item v-on:click = "handleSort('level', 'DESC')">Level DESC</b-dropdown-item>
+      <b-dropdown-item v-on:click = "handleSort('level', 'asc')">Level ASC</b-dropdown-item>
+      <b-dropdown-item v-on:click = "handleSort('level', 'desc')">Level DESC</b-dropdown-item>
     </b-dropdown>
     <span
       class = "upper-case"
@@ -48,7 +48,7 @@ export default {
     },
     orderDir: {
       type: String,
-      default: 'ASC'
+      default: 'asc'
     }
   },
   methods: {
