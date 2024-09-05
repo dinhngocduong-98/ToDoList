@@ -32,16 +32,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: "comp-control",
   data() {
     return {};
   },
   props: {
-    strSearch: {
-      type: String,
-      default: ''
-    },
     orderBy: {
       type: String,
       default: 'name'
@@ -51,16 +48,20 @@ export default {
       default: 'asc'
     }
   },
+  computed : {
+    ...mapState([ 'strSearch' ])
+  },
   methods: {
     handleClear() {
       this.$emit('handleSearch', '');
     },
-    handleSearch(e) {
-      this.$emit('handleSearch', e.target.value);
-    },
     handleSort(orderBy, orderDir) {
         this.$emit('handleSort', orderBy, orderDir)
+    },
+    handleSearch(e) {
+      this.$store.dispatch('handleSearch', e.target.value);
     }
+
   }
 };
 </script>
