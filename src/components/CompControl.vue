@@ -32,31 +32,26 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: "comp-control",
   data() {
     return {};
   },
-  props: {
-    orderBy: {
-      type: String,
-      default: 'name'
-    },
-    orderDir: {
-      type: String,
-      default: 'asc'
-    }
-  },
   computed : {
-    ...mapState([ 'strSearch' ])
+    ...mapState([ 'strSearch' ]),
+    ...mapState([ 'orderBy', 'orderDir'])
   },
   methods: {
     handleClear() {
       this.$emit('handleSearch', '');
     },
+    ...mapActions({ 
+      'actionHandleSort': 'handleSort'
+    }),
     handleSort(orderBy, orderDir) {
-        this.$emit('handleSort', orderBy, orderDir)
+      let data = { orderBy, orderDir}
+      this.actionHandleSort(data);
     },
     handleSearch(e) {
       this.$store.dispatch('handleSearch', e.target.value);

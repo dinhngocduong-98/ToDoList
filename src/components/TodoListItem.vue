@@ -15,6 +15,7 @@
 
 <script>
 import mapLevel from '../mocks/level'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: "todo-list-item",
   data() {
@@ -38,14 +39,19 @@ export default {
     }
   },
   methods: {
+    ...mapActions(
+      {
+        'actionHandleDelete': 'handleDelete',
+        'actionHandleEdit': 'handleEdit'
+      }
+    ),
     handleDelete() {
-      // console.log('list-item:')
       if(confirm('ban muon xoa')) {       
-        this.$emit('handleDelete', this.task);
+        this.actionHandleDelete(this.task);
       }
     },
-    handleEdit() {     
-      this.$emit('handleEdit', this.task);
+    handleEdit() {
+      this.actionHandleEdit(this.task);
     }
   }
 };

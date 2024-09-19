@@ -29,37 +29,22 @@
 
 <script>
 import { v4 as uuid } from 'uuid';
+import {  mapActions, mapState } from 'vuex'
 
 export default {
   name: "comp-form",
-  props: {
-    taskSelected: {
-      type: Object,
-      default: {}
-    },
-    title: {
-      type: String,
-      default: 'Add'
-    }
-  },
   data() {
     return {
       taskName: '',
       level: 0
     };
   },
-  // beforeUpdate() {
-  //   console.log('log');
-  //   //tu dong chay khi co su thay doi ve data
-  //   if(this.taskSelected !== null) {
-  //     // nguoi dung click vao button edit
-  //     console.log('1');
-  //     this.taskName = this.taskSelected.taskName;
-  //     this.level = this.taskSelected.level;
-  //   }
-  // },
+  computed: {
+    ...mapState([ 'taskSelected', 'title' ])
+  },
   watch: {
-    taskSelected:function(newData, oldData) {
+    taskSelected:function(newData) {
+      console.log(newData);
       if(newData !== null) {
         // nguoi dung click vao button edit
         this.taskName = newData.taskName;
@@ -68,8 +53,20 @@ export default {
     }
   },
   methods: {
+    ...mapActions(
+      {
+        'actionHandleAddNew': 'handleAddNew',
+        'actionHandleCancel': 'handleCancel',
+        'actionHandleUpdate': 'handleUpdate'
+      }
+    ),
     handleAddNew() {
-      this.$emit('handleAddNew', uuid(), this.taskName, parseInt(this.level));
+      let objTask = {
+            id: uuid(),
+            taskName: this.taskName,
+            level: this.level,
+          };
+      this.actionHandleAddNew(objTask);
       this.handleResetData();
     },
     handleResetData() {
@@ -77,11 +74,16 @@ export default {
       this.level = 0;
     },
     handleCancel() {
-      this.$emit('handleCancel');
+      this.actionHandleCancel();
       this.handleResetData();
     },
     handleUpdate() {
-      this.$emit('handleUpdate', this.taskSelected.id, this.taskName, parseInt(this.level));
+      let objTask = {
+            id: this.taskSelected.id,
+            taskName: this.taskName,
+            level: parseInt(this.level),
+          };
+      this.actionHandleUpdate(objTask);
       this.handleResetData();
     },
     handleClick() {

@@ -7,8 +7,6 @@
         v-bind:key="task.id"
         v-bind:task="task"
         v-bind:index="index + 1"
-        v-on:handleDelete = "handleDelete"
-        v-on:handleEdit = "handleEdit"
     />
   </ul>
   <ul v-else
@@ -38,24 +36,6 @@ export default {
     ...mapGetters([
         'listTaskSearch'
     ])
-  },
-  created() {
-    // let tasks = localStorage.getItem('task') || '[]';
-    // console.log("created TodoListTable");
-    // this.changeTasks(JSON.parse(tasks));
-  },
-  methods: {
-    ...mapActions(
-      [ 'changeTasks' ]
-    ),
-    handleDelete(task) {
-      // console.log('listTable:',task);
-      this.$emit('handleDelete', task);
-    },
-    handleEdit(task) {
-      // console.log('listTable:',task);
-      this.$emit('handleEdit', task);
-    }
   }
 };
 </script>

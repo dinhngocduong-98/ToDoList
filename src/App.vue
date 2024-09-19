@@ -4,22 +4,11 @@
       <comp-title />
     </header>
 
-    <comp-control
-      v-bind:orderBy="orderBy"
-      v-bind:orderDir="orderDir"
-      v-on:handleSort="handleSort"
-    />
+    <comp-control/>
 
     <todo-list-table
-      v-on:handleDelete="handleDelete"
-      v-on:handleEdit="handleEdit"
     />
     <comp-form
-      v-bind:taskSelected="taskSelected"
-      v-bind:title="title"
-      v-on:handleAddNew="handleAddNew"
-      v-on:handleCancel="handleCancel"
-      v-on:handleUpdate="handleUpdate"
     />
   </div>
 </template>
@@ -35,27 +24,8 @@ export default {
   name: "app",
   data() {
     return {
-      orderBy: "name",
-      orderDir: "asc",
-      taskSelected: null,
-      title: "Add",
+
     };
-  },
-  computed: {
-    // listTaskSearch() {
-    //   const { strSearch } = this;
-    //   var newItem = this.listTask.filter((item) => {
-    //     return item.taskName.toLowerCase().includes(strSearch.toLowerCase());
-    //   });
-    //   return newItem;
-    // },
-    listTaskSort() {
-      var listTask = [...this.listTaskSearch];
-      if (this.orderBy === "name") {
-        listTask.sort(this.compareName);
-      } else if (this.orderBy === "level") listTask.sort(this.compareLevel);
-      return listTask;
-    },
   },
   components: {
     TodoListTable,
@@ -64,56 +34,7 @@ export default {
     CompForm
   },
   methods: {
-    compareName(a, b) {
-      var numberSort = this.orderDir === "asc" ? -1 : 1;
-      if (a.taskName < b.taskName) return numberSort;
-      else if (a.taskName > b.taskName) return numberSort * -1;
-      return 0;
-    },
-    compareLevel(a, b) {
-      var numberSort = this.orderDir === "asc" ? -1 : 1;
-      if (a.level < b.level) return numberSort;
-      else if (a.level > b.level) return numberSort * -1;
-      return 0;
-    },
-    handleSort(orderBy, orderDir) {
-      this.orderBy = orderBy;
-      this.orderDir = orderDir;
-      // console.log(orderBy, '-', orderDir);
-    },
-    handleDelete(task) {
-      // console.log('App: ', task);
-      this.listTask = this.listTask.filter((item) => item.id !== task.id);
-    },
-    handleEdit(task) {
-      this.taskSelected = task;
-      this.title = "Update";
-    },
-    handleAddNew(id, taskName, level) {
-      let objTask = {
-        id: id,
-        taskName: taskName,
-        level: level,
-      };
-      this.listTask.push(objTask);
-      // console.log(id, '-', taskName, '-', level);
-    },
-    handleCancel() {
-      this.taskSelected = null;
-    },
-    handleUpdate(id, taskName, level) {
-      let index = this.listTask.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        let objTask = {
-          id: id,
-          taskName: taskName,
-          level: level,
-        };
-        this.listTask.splice(index, 1, objTask);
-        this.title = "Add";
-        this.taskSelected = null;
-      }
-    },
+
   },
 };
 </script>
